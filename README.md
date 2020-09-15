@@ -3,9 +3,10 @@ node.js served client for the espresso app (tz-earl/Espresso)
 
 Steps to run app
 
-install nvm
-use nvm to install the latest version of node.js
+install nvm and use nvm to install the latest version of node.js  
+`nvm use latest`
 
-npm install (to install express.js web server pkg)
-node app.js
+go to espresso2-client directory  
+`npm install`  
+`node app.js`
 
