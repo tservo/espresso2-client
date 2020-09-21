@@ -3,12 +3,13 @@
     <title>Test</title>
 </head>
 <body>
-    <h1>Hello</h1>
+    <h1>Restaurants</h1>
+    <h3 id="count">Loading</h3>
     <table id="restauranttable">
   <thead>
     <tr>
       <td>Restaurant Name</td>
-      <td>Address</td>
+      <td>City</td>
     </tr>
   </thead>
   <tbody>
@@ -17,55 +18,63 @@
 </table>
 
 <template id="restaurantrow">
-  <tr>
-    <td class="record"></td>
-    <td></td>
+  <tr class="restaurant">
+    <td class="name"></td>
+    <td class="city"></td>
   </tr>
 </template> 
 
 <script source="javascript">
-    var endpoint = 'http://127.0.0.1:5000/restaurants';
+    let endpoint = 'http://127.0.0.1:5000/restaurants';
 
-    var outputTemplate = function (response) {
-        response.json().then(function(data) {
-            console.log(data)
-        })
-    }
-    /*
-            if ('content' in document.createElement('template')) {
+    let outputTemplate = function (response) {
+        response.json()
+            .then(function (json) {
+
+                console.log(json);
+
+                    if ('content' in document.createElement('template')) {
 
         // Instantiate the table with the existing HTML tbody
         // and the row with the template
-        var tbody = document.querySelector("tbody");
-        var template = document.querySelector('#restaurantrow');
+                        let tbody = document.querySelector("tbody");
+                        let template = document.querySelector('#restaurantrow');
 
-        // Clone the new row and insert it into the table
-        var clone = template.content.cloneNode(true);
-        var td = clone.querySelectorAll("td");
-        td[0].textContent = "1235646565";
-        td[1].textContent = "Stuff";
+                        var count = 0;
 
-        tbody.appendChild(clone);
+                        if ('restaurants' in json) {
+                            count = json.restaurants.length;
 
-        // Clone the new row and insert it into the table
-        var clone2 = template.content.cloneNode(true);
-        td = clone2.querySelectorAll("td");
-        td[0].textContent = "0384928528";
-        td[1].textContent = "Acme Kidney Beans 2";
+                            for (var restaurant of json.restaurants) {
 
-        tbody.appendChild(clone2);
-        */
-   // }
+                                // Clone the new row and insert it into the table
+                                var clone = template.content.cloneNode(true);
+                                var td = clone.querySelectorAll("td");
 
-    var getData = function(url,json) {
+                                td[0].textContent = ('name' in restaurant) ? restaurant.name :
+                                    'Unknown';
+                                td[1].textContent = ('city' in restaurant) ? restaurant.city 
+                                    : 'Unknown';
+
+                                tbody.appendChild(clone);
+                            }
+                        }
+
+                    }
+
+                    document.querySelector('#count').textContent = count + " restaurants found";
+            });
+    };
+
+    var getData = function(url) {
         fetch(url, {mode: 'cors'})
         .then(outputTemplate)
         .catch(function(error) {
             console.log('we crashed',error);
-        })
-    }
+        });
+    };
     
-    getData(endpoint,{});
+    getData(endpoint);
 
 
 </script>
