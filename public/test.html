@@ -16,6 +16,8 @@
     <!-- existing data could optionally be included here -->
   </tbody>
 </table>
+    <p><label for="restaurantid">ID</label><input type="number" id="restaurantid" name="restaurantid">
+      <button id="single">Fetch</button>
 
 <template id="restaurantrow">
   <tr class="restaurant">
@@ -25,7 +27,7 @@
 </template> 
 
 <script source="javascript">
-    let endpoint = 'http://127.0.0.1:5000/restaurants';
+    let endpoint = 'http://127.0.0.1:5000/';
 
     let outputTemplate = function (response) {
         response.json()
@@ -74,7 +76,15 @@
         });
     };
     
-    getData(endpoint);
+
+    let submitButton = document.querySelector('#single');
+    submitButton.onclick = function(event) {
+        let input = document.querySelector('#restaurantid');
+        console.log(input.value);
+        getData(endpoint + 'restaurants/'+input.value);
+    }
+
+    getData(endpoint + 'restaurants');
 
 
 </script>
